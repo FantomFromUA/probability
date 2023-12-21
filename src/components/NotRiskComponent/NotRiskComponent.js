@@ -18,9 +18,20 @@ const NotRiskComponent = ({matrix}) => {
     const [maximization, setMaximization] = React.useState();
     const [modal, setModal] = React.useState();
 
+    const [err, setErr] = React.useState(false);
+
     const setData = (data) => {
         let minimum = 99999999;
         let maximum = -99999999;
+
+        let sum = 0;
+        for(let i = 0; i < data[0].length; i++){
+            sum += parseFloat(data[0][i]);
+            console.log(sum);
+        }
+
+        setErr(!(sum > 1));
+
     
         setProbabilities(data[0]);
     
@@ -32,7 +43,7 @@ const NotRiskComponent = ({matrix}) => {
         setMinA(minimum);
         setMaxA(maximum);
     
-        setA((minimum + maximum) / 2);
+        setA(maximum / 2);
     };
 
     // метод для знаходження відповіді до 1, 2 та 4 критерію
@@ -40,7 +51,6 @@ const NotRiskComponent = ({matrix}) => {
         if(probabilities.length === 0){
             return;
         }
-        console.log(probabilities);
 
         setBayesian(bayesianCriterion(matrix, probabilities));
         setMinimization(minimizationOfDispersionCriterion(matrix, probabilities));
@@ -55,6 +65,8 @@ const NotRiskComponent = ({matrix}) => {
 
         setMaximization(maximizationOfProbability(matrix, probabilities, a));
     }, [probabilities, matrix, a]);
+
+    
 
     return (
         <div>
